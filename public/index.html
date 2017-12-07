@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset='UTF-8'>
+    <title>Arduino UI</title>
+
+    <!--- BOOTSTRAP CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <!-- STYLESHEET -->
+    <link rel="stylesheet" type="text/css" href="./stylesheets/style.css">
+
+  </head>
+  <body>
+    <h1>Aruduino UI</h1>
+    <button id="btn">Click Me</button>
+
+     <!-- PUBNUB JAVASCRIPT SDK -->
+     <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.19.0.js"></script>
+
+    <!-- JAVASCRIPT, POPPER.JS & JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+    <!-- EMBEDDED JAVASCRIPT FOR PUBNUB -->
+    <script>
+      (function(){
+        // Create a new PUBNUB instance
+        let pubnub = new PubNub({
+          subscribeKey: "pub-c-edcc9fd0-9bd5-42ac-9d73-ff3c42dcbd29",
+          publishKey: "sub-c-7fe49bec-cc85-11e7-ad0a-ba50d5254565"
+        });
+
+        // Specify the channel
+        let channel = 'arduino_channel';
+
+        // PUBNUB SUBSCRIBE - RECIEVE a MESSAGE and print
+        pubnub.subscribe({
+          channel: channel,
+          message: function(m){
+            console.log('** Message Recieved: ' + JSON.stringify(m));
+          }
+        });
+
+        // PUBNUB PUBLISH - SEND the MESSAGE
+        pubnub.publish({
+          channel: channel,
+          message: {
+            from: 'foo', text: 'bar'
+          },
+          success: function(m){
+            console.log(JSON.stringify(m))
+          },
+          error: function(err){
+            console.log(JSON.stringify('** PubNub error: ' + err));
+          }
+        });
+
+        let btn = document.getElementById('btn');
+
+        btn.addEventListener('click', function(){
+          console.log('** Clicked!');
+        });
+      })(); // End of SELF RUNNING function
+    </script>
+  </body>
+</html>
