@@ -35,8 +35,8 @@ board.on('ready', function(){
 
   // Create an instance on PUBNUB 
   const pubnub = new PubNub({
-    subscribeKey: "pub-c-edcc9fd0-9bd5-42ac-9d73-ff3c42dcbd29",
-    publishKey: "sub-c-7fe49bec-cc85-11e7-ad0a-ba50d5254565"
+    subscribeKey: "XXX",
+    publishKey: "XXX"
   });
 
   // Specify the channel
